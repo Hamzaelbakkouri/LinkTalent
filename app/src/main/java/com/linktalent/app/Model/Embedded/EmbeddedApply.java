@@ -25,6 +25,6 @@ public class EmbeddedApply implements Serializable {
     @ManyToOne
     private Person player;
 
-    @FutureOrPresent(message = "date must in the present or future")
+
     private LocalDateTime applyingDate;
 }

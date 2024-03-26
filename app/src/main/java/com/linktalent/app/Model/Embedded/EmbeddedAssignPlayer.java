@@ -25,11 +25,11 @@ public class EmbeddedAssignPlayer implements Serializable {
     @ManyToOne
     @JoinColumn(name = "player")
     private Person player;
-
+    
     @ManyToOne
     @JoinColumn(name = "team")
     private Team team;
 
-    @FutureOrPresent(message = "date must now or in the future")
+
     private LocalDateTime assigningDate;
 }

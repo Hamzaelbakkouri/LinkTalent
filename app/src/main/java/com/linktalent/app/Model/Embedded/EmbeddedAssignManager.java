@@ -22,6 +22,5 @@ public class EmbeddedAssignManager implements Serializable {
     @ManyToOne
     private Person manager;
 
-    @FutureOrPresent
     private LocalDateTime assignDate;
 }

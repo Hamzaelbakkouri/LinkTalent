@@ -26,6 +26,6 @@ public class EmbeddedAssignAdmin implements Serializable {
     @JoinColumn(name = "teamAdmin")
     private Person teamAdmin;
 
-    @FutureOrPresent(message = "Date must be Now or in the future")
+
     private LocalDateTime startLeading;
 }

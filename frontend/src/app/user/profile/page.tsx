@@ -1,10 +1,12 @@
+import { HeroScrollDemo } from '@/components/Home/HeroHome'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>
-      profile page
-    </div>
+    <>
+      {/* profile page */}
+      
+    </>
   )
 }
 

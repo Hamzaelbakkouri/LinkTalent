@@ -2,6 +2,7 @@ package com.linktalent.app.Model.Entity.Parent;
 
 import com.linktalent.app.Model.Entity.*;
 import com.linktalent.app.Model.Entity.Chat.ChatRoom;
+import com.linktalent.app.Model.Entity.Token.Token;
 import com.linktalent.app.Model.Enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -44,8 +45,7 @@ public class Person implements UserDetails {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private Role role;
+    private Role role ;
 
     @Column(unique = true)
     @Email(message = "Email was not provided")
@@ -56,7 +56,7 @@ public class Person implements UserDetails {
     @Column(unique = true)
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Sport sport;
 
 
@@ -73,6 +73,10 @@ public class Person implements UserDetails {
     // TeamLeader Assigned to Team
     @OneToMany(mappedBy = "id.teamAdmin", fetch = FetchType.LAZY)
     private List<AssignAdmin> assignAdmins;
+
+    // Person Tokens
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Token> tokens;
 
 
     // Players Assigned by TeamLeader
@@ -110,35 +114,40 @@ public class Person implements UserDetails {
     private List<AssignManager> players;
 
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return role.getAuthorities();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return getEmail();
     }
 
     @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
 

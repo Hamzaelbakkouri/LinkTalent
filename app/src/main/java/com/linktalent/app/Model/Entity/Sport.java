@@ -4,6 +4,7 @@ import com.linktalent.app.Model.Entity.Parent.Person;
 import com.linktalent.app.Model.Enums.SportCategory;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity()
+@Entity
 public final class Sport {
     @Id
     @UuidGenerator
@@ -29,7 +30,7 @@ public final class Sport {
     private Integer numberOfPlayers;
 
     @ElementCollection
-    @CollectionTable(name = "Sport")
+    @CollectionTable
     private List<String> rules;
 
     @Enumerated(EnumType.STRING)

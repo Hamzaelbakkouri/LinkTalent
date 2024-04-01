@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/announcement")
 @RequiredArgsConstructor
+@Validated
 public class AnnouncementController {
     private final AnnouncementService announcementService;
 
@@ -27,7 +30,13 @@ public class AnnouncementController {
         return announcementService.getAll(pageable);
     }
 
+    @GetMapping("/random")
+    public Page<AnnouncementResponseDto> getRandomAnnouncement(Pageable pageable) {
+        return announcementService.getRandomAnnouncement(pageable);
+    }
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_TEAMLEADER')")
     public ResponseEntity<AnnouncementResponseDto> createAnnouncement(@Valid @RequestBody AnnouncementRequestDto request) {
         Optional<AnnouncementResponseDto> announcementResponseDto = announcementService.create(request);
         if (announcementResponseDto.isPresent()) {

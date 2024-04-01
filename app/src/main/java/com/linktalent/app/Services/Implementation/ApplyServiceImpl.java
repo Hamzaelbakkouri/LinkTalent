@@ -17,8 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +47,7 @@ public class ApplyServiceImpl implements ApplyService {
             EmbeddedApply embeddedApply = new EmbeddedApply();
             embeddedApply.setAnnouncement(announcement);
             embeddedApply.setPlayer(player);
-            apply.getId().setApplyingDate(LocalDateTime.now());
+            apply.setApplyingDate(LocalDate.now());
             apply.getId().setAnnouncement(announcement);
             apply.getId().setPlayer(player);
             applyRepository.save(apply);
@@ -55,12 +59,14 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public Optional<ApplyDtoResponse> update(ApplyDtoRequest request) {
-        Optional<Apply> applyToUpdate = applyRepository.findById(request.getId());
+        EmbeddedApply embeddedApply = new EmbeddedApply();
+        Announcement announcement = announcementRepository.findById(request.getId().getAnnouncement().getId()).orElseThrow(() -> new ResourceNotFoundException("Announcement Not Found"));
+        Person player = personRepository.findById(request.getId().getPlayer().getId()).orElseThrow(() -> new ResourceNotFoundException("Player Not Found"));
+        embeddedApply.setPlayer(player);
+        embeddedApply.setAnnouncement(announcement);
+        Optional<Apply> applyToUpdate = applyRepository.findById(embeddedApply);
         if (applyToUpdate.isPresent()) {
             Apply apply = modelMapper.map(request, Apply.class);
-
-            Announcement announcement = announcementRepository.findById(request.getId().getAnnouncement().getId()).orElseThrow(() -> new ResourceNotFoundException("Announcement Not Found"));
-            Person player = personRepository.findById(request.getId().getPlayer().getId()).orElseThrow(() -> new ResourceNotFoundException("Player Not Found"));
             if (announcement != null && player != null) {
                 apply.getId().setAnnouncement(announcement);
                 apply.getId().setPlayer(player);
@@ -75,16 +81,29 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public Optional<ApplyDtoResponse> getById(EmbeddedApply embeddedApply) {
+        Announcement announcement = this.announcementRepository.findById(embeddedApply.getAnnouncement().getId()).orElseThrow(() -> new ResourceNotFoundException("Announcement not found"));
+        Person player = this.personRepository.findById(embeddedApply.getPlayer().getId()).orElseThrow(() -> new ResourceNotFoundException("Player not found"));
+        embeddedApply.setAnnouncement(announcement);
+        embeddedApply.setPlayer(player);
         Optional<Apply> apply = applyRepository.findById(embeddedApply);
-        return apply.map(value -> modelMapper.map(value, ApplyDtoResponse.class));
+        return Optional.of(modelMapper.map(apply.get(), ApplyDtoResponse.class));
     }
 
     @Override
     public Boolean delete(ApplyDtoRequest request) {
-        if (applyRepository.findById(request.getId()).isPresent()) {
-            applyRepository.deleteById(request.getId());
+        Apply announcement = modelMapper.map(request, Apply.class);
+        if (applyRepository.findById(announcement.getId()).isPresent()) {
+            applyRepository.deleteById(announcement.getId());
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public Page<ApplyDtoResponse> getUserApplication(UUID Id, Pageable pageable) {
+        this.personRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("person not found"));
+        Page<Apply> applications = this.applyRepository.findAllById_Player_Id(Id, pageable);
+        return applications.map(apply -> modelMapper.map(apply, ApplyDtoResponse.class));
     }
 }

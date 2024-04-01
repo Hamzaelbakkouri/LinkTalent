@@ -13,8 +13,6 @@ public class CommentDtoRequest {
 
     private String text;
 
-    private LocalDateTime creationDate;
-
     private Integer commentParent;
 
     private UUID person;

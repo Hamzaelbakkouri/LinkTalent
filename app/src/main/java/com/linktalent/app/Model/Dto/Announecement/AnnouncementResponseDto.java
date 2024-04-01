@@ -1,39 +1,40 @@
 package com.linktalent.app.Model.Dto.Announecement;
 
-import com.linktalent.app.Model.Entity.Apply;
-import com.linktalent.app.Model.Entity.Team;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.Builder;
+import com.linktalent.app.Model.Dto.Apply.ApplyDtoRequest;
+import com.linktalent.app.Model.Dto.Apply.ApplyDtoResponse;
+import com.linktalent.app.Model.Dto.Team.TeamDto;
+import com.linktalent.app.Model.Dto.Team.TeamDtoRequest;
+import com.linktalent.app.Model.Dto.Team.TeamDtoResponse;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class AnnouncementResponseDto {
-    private UUID id;
+    UUID id;
 
-    private String title;
+    String title;
 
-    private Integer places;
+    Integer places;
 
-    private String description;
+    String description;
 
-    private String location;
+    String location;
 
-    private LocalDate creationDate;
+    LocalDate creationDate;
 
-    private LocalDate endDate;
+    LocalDate endDate;
 
-    private String link;
+    String link;
 
-    private Team team;
+    TeamDto team;
 
-    private List<Apply> applies;
+//    List<ApplyDtoRequest> applies ;
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class SportResponseDTO {
     private UUID id;
     private String name;

@@ -27,17 +27,18 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfiguration {
     private static final String[] URLS = {
-            "/api/**",
-            "/auth/**",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/v3/api-docs/**",
+            "/api/auth",
+            "/api/auth/register",
+            "/api/auth/manager",
+//            "/v2/api-docs",
+//            "/v3/api-docs",
+//            "/v3/api-docs/**",
             "/swagger-resources",
             "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui/**",
-            "/webjars/**",
+//            "/webjars/**",
             "/swagger-ui.html"
     };
 

@@ -10,8 +10,5 @@ import lombok.NoArgsConstructor;
 @Setter
 @NoArgsConstructor
 public class AssignManagerDtoResponse {
-    @EmbeddedId
-    private EmbeddedAssignManager id;
-
     private Boolean isLeader;
 }

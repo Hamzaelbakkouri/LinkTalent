@@ -1,2 +1,4 @@
-package com.linktalent.app.Services.Spec;public interface TeamService {
+package com.linktalent.app.Services.Spec;
+
+public interface TeamService {
 }

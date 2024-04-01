@@ -10,4 +10,6 @@ import java.util.UUID;
 
 public interface AnnouncementService extends G_Service<AnnouncementRequestDto, AnnouncementResponseDto, UUID> {
     Page<AnnouncementResponseDto> findAllByTeam(Team team, Pageable pageable);
+
+    Page<AnnouncementResponseDto> getRandomAnnouncement(Pageable pageable);
 }

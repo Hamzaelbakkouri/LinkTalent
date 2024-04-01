@@ -1,5 +1,6 @@
 package com.linktalent.app.Model.Dto.Person;
 
+import com.linktalent.app.Model.Dto.Sport.SportRequestDTO;
 import com.linktalent.app.Model.Enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,5 @@ public class ProfileDtoResponse implements Serializable {
     private Role role;
     private String email;
     private String phoneNumber;
+    private SportRequestDTO sport;
 }

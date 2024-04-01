@@ -9,6 +9,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +25,4 @@ public class EmbeddedApply implements Serializable {
 
     @ManyToOne
     private Person player;
-
-
-    private LocalDateTime applyingDate;
 }

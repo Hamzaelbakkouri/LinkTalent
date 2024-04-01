@@ -3,6 +3,7 @@ package com.linktalent.app.Services.Implementation;
 import com.linktalent.app.Exeptions.ResourceNotFoundException;
 import com.linktalent.app.Model.Dto.Announecement.AnnouncementRequestDto;
 import com.linktalent.app.Model.Dto.Announecement.AnnouncementResponseDto;
+import com.linktalent.app.Model.Dto.Apply.ApplyDtoResponse;
 import com.linktalent.app.Model.Entity.Announcement;
 import com.linktalent.app.Model.Entity.Team;
 import com.linktalent.app.Repository.AnnouncementRepository;
@@ -85,5 +86,11 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             return announcementPage.map(announcement -> modelMapper.map(announcement, AnnouncementResponseDto.class));
         }
         throw new ResourceNotFoundException("Team with id :" + team.getId() + "Not Found");
+    }
+
+    @Override
+    public Page<AnnouncementResponseDto> getRandomAnnouncement(Pageable pageable) {
+        Page<Announcement> announcementPage = announcementRepository.findRandomQuestions(pageable);
+        return announcementPage.map(announcement -> modelMapper.map(announcement, AnnouncementResponseDto.class));
     }
 }

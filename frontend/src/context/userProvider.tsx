@@ -1,20 +1,31 @@
-"use client";
-import { USERFORMAT } from "@/Types/UserTypes";
+'use client'
+import { PROFILE } from "@/Types/UserTypes";
 import { createContext, useContext, useState, useEffect } from "react";
-import Cookie from "universal-cookie";
+import Cookies from "universal-cookie";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface AuthContext {
-    user: USERFORMAT | null;
+    state: PROFILE | any
     login: (email: string, password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext | null>(null);
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [user, setUser] = useState<USERFORMAT | null>(null);
-    const Cookies = new Cookie();
+    const [state, setState] = useState<PROFILE | null>(null);
+    const cookie = new Cookies();
+    const router = useRouter();
 
+    useEffect(() => {
+        const token = cookie.get('token');
+        const user = cookie.get('user');
+
+        if (token && user) {
+            setState(user);
+        }
+    }, []);
 
     const getTheCurrentUser = async (token: string) => {
         try {
@@ -23,7 +34,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     Authorization: `Bearer ${token}`
                 }
             });
-            setUser(response.data);
+            setState(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -34,23 +45,27 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         await axios.post(`http://localhost:8080/api/auth`, {
             email,
             password
-        }).then((res: any) => {
-            console.log(res.data.access_token)
-            getTheCurrentUser(res.data.access_token)
-            if (user) {
-                console.log(user);
-                Cookies.set('token', res.data.access_token);
+        }).then(async (res: any) => {
+            await getTheCurrentUser(res.data.access_token)
+            if (state) {
+                cookie.get('token') && cookie.remove('token')
+                cookie.set('token', res.data.access_token);
+                cookie.set('user', state)
+                router.push("/user");
+                toast.success("Login successful!");
+            } else {
+                cookie.remove('token');
+                cookie.remove('user')
+                toast.error("Failed to login");
             }
-            // Cookies.remove('token');
-            // console.log("Failed to login");
             // redirection
         }).catch((err: any) => {
-            console.log(err);
-        });
+            console.log(err.response.data.message);
+        })
     }
 
     return (
-        <AuthContext.Provider value={{ user, login }}>
+        <AuthContext.Provider value={{ state, login }}>
             {children}
         </AuthContext.Provider>
     );
@@ -59,7 +74,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
+        throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
 }

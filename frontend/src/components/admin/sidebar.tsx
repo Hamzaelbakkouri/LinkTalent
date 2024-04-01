@@ -1,15 +1,10 @@
 import Image from 'next/image'
+import Link from 'next/link';
 import { GoHomeFill } from "react-icons/go";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { SiSocialblade } from "react-icons/si";
-import { IoMdChatbubbles } from "react-icons/io";
-import Community, { community } from './Community';
 
 const Sidebar = () => {
-    const yourCommunityData: community[] = [
-        { userName: "Hamza_el_bakkouri", tag: "elbakkourihamza" },
-        { userName: "Allo_Wach", tag: "allo" },
-    ];
     return (
         <>
             <div className="bg-[#1E1F24] h-screen border border-l-gray-900 border-b-gray-900 border-t-gray-900 border-r-gray-600">
@@ -32,38 +27,30 @@ const Sidebar = () => {
                     </div>
                 </div>
 
-                <div className='p-4 grid gap-y-2'>
+                <div className='p-4 grid gap-y-8'>
                     <div className="relative cursor-pointer">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 hover:text-[#2d99ffe3]">
                             <GoHomeFill className='text-3xl text-gray-400 hover:text-[#2d99ffe3]' />
                         </div>
-                        <div className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-600  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
-                            Home
-                        </div>
+                        <Link href="/admin/team" className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-600  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
+                            Teams
+                        </Link>
                     </div>
                     <div className="relative cursor-pointer">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 hover:text-[#2d99ffe3]">
                             <IoShareSocialOutline className='text-3xl text-gray-400 hover:text-[#2d99ffe3]' />
                         </div>
-                        <div className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-50  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
-                            Opportunities
-                        </div>
+                        <Link href="/admin/users" className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-50  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
+                            Users
+                        </Link>
                     </div>
                     <div className="relative cursor-pointer">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 hover:text-[#2d99ffe3]">
                             <SiSocialblade className='text-3xl text-gray-400 hover:text-[#2d99ffe3]' />
                         </div>
-                        <div className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-50  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
-                            Applies
-                        </div>
-                    </div>
-                    <div className="relative cursor-pointer">
-                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 hover:text-[#2d99ffe3]">
-                            <IoMdChatbubbles className='text-3xl text-gray-400 hover:text-[#2d99ffe3]' />
-                        </div>
-                        <div className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-50  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
-                            Chats
-                        </div>
+                        <Link href="" className="w-full px-16 py-3 text-gray-900 rounded-lg bg-gray-50  dark:bg-[#1E1F24] font-semibold text-md hover:dark:bg-[#31333a] dark:placeholder-gray-400 dark:text-gray-400 hover:text-[#2d99ffe3] ">
+                            admin
+                        </Link>
                     </div>
                 </div>
 
@@ -72,7 +59,6 @@ const Sidebar = () => {
                     <hr className='w-[80%] border-1 rounded-xl border-gray-700' />
                 </div>
 
-                <Community community={yourCommunityData} />
 
                 <div className='w-full flex justify-center py-6'>
                     <hr className='w-[80%] border-1 rounded-xl border-gray-700' />

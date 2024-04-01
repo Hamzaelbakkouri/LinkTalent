@@ -4,6 +4,8 @@ import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
 import { TextGenerateEffect } from '@/components/paragraph/TextGenerateEffect';
 import { useAuth } from '@/context/userProvider';
+import Cookies from 'universal-cookie';
+import { redirect } from 'next/navigation';
 
 require('dotenv').config();
 
@@ -36,9 +38,8 @@ const Page = () => {
     return isValid;
   }
 
-  function submitForm(e: any) {
+  async function submitForm(e: any) {
     e.preventDefault();
-    console.log();
     if (validateForm()) {
       auth?.login(email, password);
     }

@@ -8,19 +8,14 @@ export type LEADER = {
 
 }
 
+// export enum ROLE {
+//     PLAYER,
+//     MANAGER,
+//     TEAMLEADER,
+//     ADMIN
+// }
 
-export type LOGIN = {
-
-}
-
-export enum UserTypes {
-    PLAYER,
-    MANAGER,
-    LEADER,
-    ADMIN
-}
-
-export type USERFORMAT = {
+export type PROFILE = {
     id: string,
     firstName: string,
     lastName: string,
@@ -28,4 +23,5 @@ export type USERFORMAT = {
     role: string,
     email:string,
     phoneNumber: string,
+    sport: any;
 }

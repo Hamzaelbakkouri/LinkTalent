@@ -1,10 +1,23 @@
+'use client'
 import Link from 'next/link';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
 import { GoHomeFill } from "react-icons/go";
 import { IoChatbubbleEllipses, IoNotifications } from "react-icons/io5";
+import Cookies from 'universal-cookie';
 
 
 const Navbar = () => {
+    const cookie = new Cookies();
+    const [user, setUser] = useState(cookie.get('user'))
+    const route = useRouter()
+
+    const Logout = () => {
+        cookie.remove('user');
+        cookie.remove('token');
+        setUser(null)
+        route.push('/auth');
+    }
     return (
         <>
             <div className='w-full bg-[#1E1F24] text-white p-4 border border-l-gray-900 border-r-gray-900 border-t-gray-900 border-b-gray-600 flex justify-between items-center'>
@@ -18,9 +31,9 @@ const Navbar = () => {
                         <Link href="/user/announcement" className='bg-[#27292F] transition-all duration-200 cursor-pointer hover:text-[#45a3fce3] hover:bg-[#33353D] rounded-md py-2 px-7 flex text-sm hover:border hover:border-gray-600'>
                             <p>Announcement</p>
                         </Link>
-                        <div className='bg-[#27292F] transition-all duration-200 cursor-pointer hover:text-[#45a3fce3] hover:bg-[#33353D] rounded-md py-2 px-7 flex text-sm hover:border hover:border-gray-600'>
+                        <Link href="/user/profile/apply" className='bg-[#27292F] transition-all duration-200 cursor-pointer hover:text-[#45a3fce3] hover:bg-[#33353D] rounded-md py-2 px-7 flex text-sm hover:border hover:border-gray-600'>
                             <p>Your Application</p>
-                        </div>
+                        </Link>
                         <div className='bg-[#27292F] transition-all duration-200 cursor-pointer hover:text-[#45a3fce3] hover:bg-[#33353D] rounded-md py-2 px-8 flex text-sm items-center gap-3 hover:border hover:border-gray-600'>
                             <p>Connections</p>
                         </div>
@@ -29,21 +42,29 @@ const Navbar = () => {
 
                 {/* seconds section */}
                 <div className='w-[50%] flex justify-end items-center'>
-                    <IoChatbubbleEllipses className='text-gray-300 text-2xl mr-4  cursor-pointer'/>
-                    <IoNotifications className='text-gray-300 text-2xl mr-4 cursor-pointer'/>
+                    <IoChatbubbleEllipses className='text-gray-300 text-2xl mr-4  cursor-pointer' />
+                    <IoNotifications className='text-gray-300 text-2xl mr-4 cursor-pointer' />
                     <div className='flex gap-3'>
-                        <Link href="/user/profile" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] border border-gray-600 rounded-md py-2 px-7 flex text-sm'>
-                            <p>Profile</p>
-                        </Link>
-                        <Link href="/logout" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
-                            <p>Logout</p>
-                        </Link>
-                        <Link href="/auth" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
-                            <p>SignIn</p>
-                        </Link>
-                        <Link href="/auth/signup" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
-                            <p>SignUp</p>
-                        </Link>
+                        {
+                            user ?
+                                <>
+                                    <Link href="/user/profile" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] border border-gray-600 rounded-md py-2 px-7 flex text-sm'>
+                                        <p>Profile</p>
+                                    </Link>
+                                    <button onClick={Logout} className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
+                                        <p>Logout</p>
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <Link href="/auth" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
+                                        <p>SignIn</p>
+                                    </Link>
+                                    <Link href="/auth/signup" className='bg-[#27292F] transition-all duration-200 hover:bg-[#33353D] hover:text-[#45a3fce3] rounded-md border border-gray-600 py-2 px-7 mr-2 flex text-sm'>
+                                        <p>SignUp</p>
+                                    </Link>
+                                </>
+                        }
                     </div>
                 </div>
             </div>

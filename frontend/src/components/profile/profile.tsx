@@ -1,24 +1,17 @@
 import React from 'react'
 import { PROFILE } from '@/Types/UserTypes'
+import Cookies from 'universal-cookie'
 
 interface ProfileProps {
     profile: PROFILE
 }
 const profile: React.FC<ProfileProps> = ({ profile }) => {
-    // function getRoleString(role: ROLE): string {
-    //     switch (role) {
-    //         case ROLE.PLAYER:
-    //             return "Player";
-    //         case ROLE.MANAGER:
-    //             return "Manager";
-    //         case ROLE.TEAMLEADER:
-    //             return "Team Leader";
-    //         case ROLE.ADMIN:
-    //             return "Admin";
-    //         default:
-    //             return "Unknown";
-    //     }
-    // }
+    const cookie = new Cookies();
+    const userData = cookie.get('user');
+
+    const apply = () => {
+        alert('Followed');
+    }
     return (
         <div>
             <div className="relative  mx-auto md:max-w-5xl min-w-0 break-words bg-[#1E1F24] w-full mb-6 shadow-lg rounded-xl mt-16">
@@ -26,7 +19,7 @@ const profile: React.FC<ProfileProps> = ({ profile }) => {
                     <div className="flex flex-wrap justify-center">
                         <div className="w-full flex justify-center">
                             <div className="relative">
-                                <img src="https://media.licdn.com/dms/image/D4E03AQFh9b7bS7j28A/profile-displayphoto-shrink_800_800/0/1677930776068?e=2147483647&v=beta&t=g5wcuEdHGlOczZ9-0svAVWC7EZGcaeYbCYoCZYdrg8U" className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]" />
+                                <img src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]" />
                             </div>
                         </div>
                         <div className="w-full text-center mt-20">
@@ -67,7 +60,11 @@ const profile: React.FC<ProfileProps> = ({ profile }) => {
                                 <p className="font-light leading-relaxed text-gray-400 mb-4">
                                     Address: {profile.address}
                                 </p>
-                                <a href="" className="font-normal text-gray-400 hover:text-white">Follow Account</a>
+                                {userData && userData.id !== profile.id ?
+                                    <button onClick={apply} className="font-normal text-gray-400 hover:text-white">Follow Account</button>
+                                    :
+                                    <a href="" className="font-normal text-gray-400 hover:text-blue-700">YOU PROFILE</a>
+                                }
                             </div>
                         </div>
                     </div>

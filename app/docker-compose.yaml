@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - linktalent-db
+    environment:
+      DB_URL : jdbc:postgresql://linktalent-db:5000/
+    networks:
+      - linktalent
+  linktalent-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=linktalent
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=hamza2018
+    ports:
+      - "5000:5000"
+    networks:
+      - linktalent
+
+networks:
+  linktalent :
+    driver: bridge

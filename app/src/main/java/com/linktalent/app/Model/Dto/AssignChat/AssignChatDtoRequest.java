@@ -4,6 +4,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class AssignChatDtoRequest {
     private Integer id;
 

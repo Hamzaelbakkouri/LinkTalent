@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect } from "react";
 import Cookies from "universal-cookie";
 
-export default function UserLayout({
+export default function LeaderLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -14,7 +14,8 @@ export default function UserLayout({
   const route = useRouter();
 
   useLayoutEffect(() => {
-    if (!cookie.get('user')) {
+    const user = cookie.get('user');
+    if (!user && user.role !== 'TEAMLEADER') {
       route.push("/auth");
     }
   }, [])

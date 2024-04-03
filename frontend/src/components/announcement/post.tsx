@@ -1,23 +1,30 @@
+'use client'
 import { Announcement } from '@/Types/Announcement'
-import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
+import Apply from "@/components/apply"
 
 interface announcementPost {
     announcement: Announcement
 }
 
 const post: React.FC<announcementPost> = ({ announcement }) => {
+
+    const [open, setOpen] = useState(false)
     return (
         <>
+            {open &&
+                <div className='w-full flex h-screen fixed'>
+                    <Apply announcementId={announcement.id} setOppen={setOpen} />
+                </div>
+            }
             <main className="h-full w-full bg-[#2A2A2C] flex items-center justify-center py-8">
                 <div className="max-w-screen-md bg-[#1e1e20] mt-6 rounded-md p-4">
                     <div className="flex items-center justify-between">
-                        <div className="gap-3.5	flex items-center ">
+                        <div className="gap-3.5	flex items-center">
                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" className="object-cover bg-yellow-500 rounded-full w-10 h-10" />
                             <div className="flex flex-col">
-                                <b className="mb-2 capitalize">{announcement.team.name}</b>
-                                <time dateTime="06-08-21" className="text-gray-400 text-xs">{announcement.creationDate}
-                                </time>
+                                <p className="mb-2 capitalize">{announcement.team.name}</p>
+                                <time dateTime="06-08-21" className="text-gray-400 text-xs">{announcement.creationDate}</time>
                             </div>
                         </div>
                         <div className="rounded-full h-3.5 flex	items-center justify-center">
@@ -48,7 +55,7 @@ const post: React.FC<announcementPost> = ({ announcement }) => {
                     </div>
                     <div className=" h-16 flex items-center justify-around ">
                         <div className="flex items-center gap-3">
-                            <Link href={`/user/apply/${announcement.id}`} className="text-sm hover:bg-[#363636] px-11 py-2 rounded-md">Apply</Link>
+                            <button onClick={() => { setOpen(!open) }} className="text-sm hover:bg-[#363636] px-11 py-2 rounded-md">Apply</button>
                         </div>
                         <div className="flex items-center gap-3">
                             <button className="text-sm hover:bg-[#363636] px-11 py-2 rounded-md">Share</button>

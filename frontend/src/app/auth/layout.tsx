@@ -5,7 +5,7 @@ export default function UserLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
+    
     return (
         <html lang="en">
             <body>

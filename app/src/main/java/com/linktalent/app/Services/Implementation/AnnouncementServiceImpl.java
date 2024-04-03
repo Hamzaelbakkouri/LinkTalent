@@ -3,7 +3,6 @@ package com.linktalent.app.Services.Implementation;
 import com.linktalent.app.Exeptions.ResourceNotFoundException;
 import com.linktalent.app.Model.Dto.Announecement.AnnouncementRequestDto;
 import com.linktalent.app.Model.Dto.Announecement.AnnouncementResponseDto;
-import com.linktalent.app.Model.Dto.Apply.ApplyDtoResponse;
 import com.linktalent.app.Model.Entity.Announcement;
 import com.linktalent.app.Model.Entity.Team;
 import com.linktalent.app.Repository.AnnouncementRepository;

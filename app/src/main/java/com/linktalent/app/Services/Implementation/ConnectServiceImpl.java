@@ -5,6 +5,7 @@ import com.linktalent.app.Model.Dto.Connect.ConnectDtoRequest;
 import com.linktalent.app.Model.Dto.Connect.ConnectDtoResponse;
 import com.linktalent.app.Model.Embedded.EmbeddedConnect;
 import com.linktalent.app.Model.Entity.Connect;
+import com.linktalent.app.Model.Entity.Parent.Person;
 import com.linktalent.app.Repository.ConnectRepository;
 import com.linktalent.app.Repository.PersonRepository;
 import com.linktalent.app.Services.Spec.ConnectService;
@@ -31,23 +32,28 @@ public class ConnectServiceImpl implements ConnectService {
 
     @Override
     public Optional<ConnectDtoResponse> create(ConnectDtoRequest request) {
-        Connect connect = modelMapper.map(request, Connect.class);
+        Person person1 = personRepository.findById(request.getEmbeddedConnect().getPersonRequest()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found"));
+        Person person2 = personRepository.findById(request.getEmbeddedConnect().getPersonRequest()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found"));
         EmbeddedConnect embeddedConnect = new EmbeddedConnect();
-        embeddedConnect.setPersonRequest(personRepository.findById(request.getEmbeddedConnect().getPersonRequest().getId()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found")));
-        embeddedConnect.setPersonToAccept(personRepository.findById(request.getEmbeddedConnect().getPersonToAccept().getId()).orElseThrow(() -> new ResourceNotFoundException("Person To Accept Not Found")));
+        embeddedConnect.setPersonRequest(person1);
+        embeddedConnect.setPersonRequest(person2);
+        Connect connect = new Connect();
         connect.setEmbeddedConnect(embeddedConnect);
+        connect.setIsConnect(request.getIsConnect());
         connectRepository.save(connect);
         return Optional.of(modelMapper.map(connect, ConnectDtoResponse.class));
     }
 
     @Override
     public Optional<ConnectDtoResponse> update(ConnectDtoRequest request) {
-        Optional<Connect> connectToUpdate = connectRepository.findById(request.getEmbeddedConnect());
+        Person person1 = personRepository.findById(request.getEmbeddedConnect().getPersonRequest()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found"));
+        Person person2 = personRepository.findById(request.getEmbeddedConnect().getPersonRequest()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found"));
+        EmbeddedConnect embeddedConnect = new EmbeddedConnect();
+        embeddedConnect.setPersonRequest(person1);
+        embeddedConnect.setPersonRequest(person2);
+        Optional<Connect> connectToUpdate = connectRepository.findById(embeddedConnect);
         if (connectToUpdate.isPresent()) {
             Connect connect = connectToUpdate.get();
-            EmbeddedConnect embeddedConnect = connect.getEmbeddedConnect();
-            embeddedConnect.setPersonRequest(personRepository.findById(request.getEmbeddedConnect().getPersonRequest().getId()).orElseThrow(() -> new ResourceNotFoundException("Person Request Not Found")));
-            embeddedConnect.setPersonToAccept(personRepository.findById(request.getEmbeddedConnect().getPersonToAccept().getId()).orElseThrow(() -> new ResourceNotFoundException("Person To Accept Not Found")));
             connectRepository.save(connect);
             return Optional.of(modelMapper.map(connect, ConnectDtoResponse.class));
         }
@@ -62,10 +68,6 @@ public class ConnectServiceImpl implements ConnectService {
 
     @Override
     public Boolean delete(ConnectDtoRequest request) {
-        if (connectRepository.existsById(request.getEmbeddedConnect())) {
-            connectRepository.deleteById(request.getEmbeddedConnect());
-            return true;
-        }
-        return false;
+        return true;
     }
 }

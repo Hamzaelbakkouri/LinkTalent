@@ -7,36 +7,27 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface AuthContext {
-    state: PROFILE | any
+    state: PROFILE | null;
     login: (email: string, password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext | null>(null);
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [state, setState] = useState<PROFILE | null>(null);
     const cookie = new Cookies();
     const router = useRouter();
+    const [state, setState] = useState<PROFILE | null>(cookie.get('user'));
 
-    useEffect(() => {
-        const token = cookie.get('token');
-        const user = cookie.get('user');
-
-        if (token && user) {
-            setState(user);
-        }
-    }, []);
-
-    const getTheCurrentUser = async (token: string) => {
+    async function getTheCurrentUser(token: string): Promise<PROFILE> {
         try {
             const response = await axios.get('http://localhost:8080/api/person/profile', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setState(response.data);
+            return response.data;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
@@ -46,19 +37,17 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             email,
             password
         }).then(async (res: any) => {
-            await getTheCurrentUser(res.data.access_token)
-            if (state) {
-                cookie.get('token') && cookie.remove('token')
-                cookie.set('token', res.data.access_token);
-                cookie.set('user', state)
-                router.push("/user");
-                toast.success("Login successful!");
-            } else {
-                cookie.remove('token');
+            cookie.remove('token');
+            cookie.set('token', res.data.access_token);
+            toast.success("Login successful!");
+            const user = await getTheCurrentUser(res.data.access_token)
+            if (user) {
                 cookie.remove('user')
+                cookie.set('user', user)
+                router.push("/user/announcement");
+            } else {
                 toast.error("Failed to login");
             }
-            // redirection
         }).catch((err: any) => {
             console.log(err.response.data.message);
         })
